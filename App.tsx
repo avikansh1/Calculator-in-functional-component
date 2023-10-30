@@ -1,20 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { View, Text, StyleSheet,  } from 'react-native'
+import React from 'react'
+import { ThemeContext } from './src/context/ThemeContext'
+import {useState} from "react"
+import { Switch } from 'react-native'
+import { myColors } from './src/styles/Colors'
+import MyKeyboard from './src/components/MyKeyboard'
+import { SafeAreaView } from 'react-native'
 
-export default function App() {
+const App = () => {
+  const [theme, setTheme] = useState("light")
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <ThemeContext.Provider value={theme} >
+    <SafeAreaView style={theme === "light"?styles.container:[styles.container,{backgroundColor:'black'}]}>
+      <Switch
+      style={{marginTop:30}}
+      value={theme==='light'}
+      onValueChange={()=>setTheme(theme=== 'light'?"dark":"light")}
+      />
+      <MyKeyboard/>
+    </SafeAreaView>
+    </ThemeContext.Provider>
+  )
 }
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+  container:{
+    flex:1,
+    backgroundColor:myColors.light,
+    alignItems:"center",
+    justifyContent:"flex-start",
+  }
+})
+
+export default App
